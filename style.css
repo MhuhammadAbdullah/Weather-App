@@ -87,6 +87,37 @@ body::before {
 
 /* END INPUT CONTAINER */
 
+
+/* LOADING SPINER */
+
+.loading-spinner {
+    display: none; /* Initially hidden */
+    position: fixed; /* Fixed position for full-screen centering */
+    top: 50%; /* Center vertically */
+    left: 50%; /* Center horizontally */
+    width: 50px; /* Spinner width */
+    height: 50px; /* Spinner height */
+    border: 5px solid #f3f3f3; /* Outer border color */
+    border-top: 5px solid #143442; /* Top border color for spinning effect */
+    border-radius: 50%; /* Make it circular */
+    animation: spin 1s linear infinite; /* Smooth spinning animation */
+    transform: translate(-50%, -50%); /* Exact centering by offsetting half of its size */
+    z-index: 9999; /* Ensures it stays above other elements */
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg); /* Start at 0 degrees */
+    }
+    100% {
+        transform: rotate(360deg); /* Complete one full rotation */
+    }
+}
+
+
+
+/* END LOADING SPINER */
+
 /* SECTION: WEATHER INFO */
 .weather-info {
     display: flex;
