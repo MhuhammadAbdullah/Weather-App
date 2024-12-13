@@ -514,7 +514,21 @@ async function getFetchData(endPoint, city) {
 
 
 
-// Get weather icon based on weather ID
+// // Get weather icon based on weather ID
+// function getWeatherIcon(id, isNight) {
+//     if (id >= 200 && id < 300) return 'weather-assets/thunderstorm.png';
+//     if (id >= 300 && id < 500) return 'weather-assets/drizzle.png';
+//     if (id >= 500 && id < 600) return 'weather-assets/rain.png';
+//     if (id >= 600 && id < 700) return 'weather-assets/snow.png';
+//     if (id >= 700 && id < 800) return 'weather-assets/atmosphere.png';
+//     if (id === 800) return isNight ? 'weather-assets/clear-sky-night.png' : 'weather-assets/clear-sky-day.png';
+//     if (id === 801) return isNight ? 'weather-assets/few-clouds-night.png' : 'weather-assets/few-clouds-day.png';
+//     if (id === 802) return 'weather-assets/scattered-clouds.png';
+//     if (id === 803) return isNight ? 'weather-assets/broken-clouds-night.png' : 'weather-assets/broken-clouds-day.png';
+//     if (id === 804) return 'weather-assets/overcast-clouds.png';
+//     else return 'weather-assets/overcast-clouds.png'; // Fallback icon
+// }
+
 function getWeatherIcon(id, isNight) {
     if (id >= 200 && id < 300) return 'weather-assets/thunderstorm.png';
     if (id >= 300 && id < 500) return 'weather-assets/drizzle.png';
@@ -525,11 +539,135 @@ function getWeatherIcon(id, isNight) {
     if (id === 801) return isNight ? 'weather-assets/few-clouds-night.png' : 'weather-assets/few-clouds-day.png';
     if (id === 802) return 'weather-assets/scattered-clouds.png';
     if (id === 803) return isNight ? 'weather-assets/broken-clouds-night.png' : 'weather-assets/broken-clouds-day.png';
-    if (id === 804) return 'weather-assets/overcast-clouds.png';
-    else return 'weather-assets/few-clouds-day.png'; // Fallback icon
+    if (id === 804) return isNight ? 'weather-assets/broken-clouds-night.png' : 'weather-assets/broken-clouds-day.png';
+    // if (id === 804) return 'weather-assets/snow.png';
+    
+    // Fallback condition
+    console.warn("Unrecognized weather condition ID:", id);
+    return 'weather-assets/default-weather.png'; // Use a generic fallback image here
 }
 
-// Update the weather information
+
+
+// // Update the weather information
+// async function updateWeatherInfo(city) {
+//     var weatherData = await getFetchData('weather', city);
+
+//     if (!weatherData || weatherData.cod != 200) {
+//         // Clear previous data
+//         countryTxt.textContent = '';
+//         tempTxt.textContent = '';
+//         conditionTxt.textContent = '';
+//         humidityValueTxt.textContent = '';
+//         windValueTxt.textContent = '';
+//         weatherSummaryImg.src = '';
+//         currentDateTxt.textContent = '';
+//         // Show "Not Found" section
+//         showDisplaySection(notFoundSection);
+//         return;
+//     }
+
+//     console.log(weatherData);
+
+//     // Destructure and update weather information
+//     var {
+//         name: country,
+//         main: { temp, humidity },
+//         weather: [{ id, main }],
+//         wind: { speed },
+//         sys: { sunrise, sunset },
+//     } = weatherData;
+
+//     const currentTime = new Date().getTime() / 1000; // Current time in seconds
+//     const isNight = currentTime < sunrise || currentTime > sunset;
+
+//     countryTxt.textContent = country;
+//     tempTxt.textContent = `${Math.round(temp)} °C`;
+//     conditionTxt.textContent = main;
+//     humidityValueTxt.textContent = `${humidity}%`;
+//     windValueTxt.textContent = `${Math.round(speed)} Km/h`;
+//     currentDateTxt.textContent = new Date().toLocaleDateString('en-US', {
+//         weekday: 'short',
+//         day: 'numeric',
+//         month: 'short',
+//     });
+
+//     // Corrected the path to weather icons
+//     weatherSummaryImg.src = getWeatherIcon(id, isNight);
+//     // Dynamically set the size of the image
+//     weatherSummaryImg.style.width = '120px';
+//     weatherSummaryImg.style.height = '90px';
+//     weatherSummaryImg.style.objectFit = 'contain';
+
+//     showDisplaySection(weatherInfoSection);
+// }
+
+
+// // Update the weather information
+// async function updateWeatherInfo(city) {
+//     var weatherData = await getFetchData('weather', city);
+
+//     if (!weatherData || weatherData.cod != 200) {
+//         // Clear previous data
+//         countryTxt.textContent = '';
+//         tempTxt.textContent = '';
+//         conditionTxt.textContent = '';
+//         humidityValueTxt.textContent = '';
+//         windValueTxt.textContent = '';
+//         weatherSummaryImg.src = '';
+//         currentDateTxt.textContent = '';
+//         // Show "Not Found" section
+//         showDisplaySection(notFoundSection);
+//         console.error("Weather data not found or API error.");
+//         return;
+//     }
+
+//     console.log("Weather data response:", weatherData); // Debugging line
+
+//     // Destructure safely
+//     var { name: country, main: { temp, humidity }, weather, wind, sys } = weatherData;
+
+//     if (!weather || !weather[0] || !wind || !sys) {
+//         console.error("Incomplete weather data received.");
+//         return;
+//     }
+
+//     const { id, main } = weather[0];
+//     const { speed } = wind;
+//     const { sunrise, sunset } = sys;
+
+//     const currentTime = new Date().getTime() / 1000; // Current time in seconds
+//     const isNight = currentTime < sunrise || currentTime > sunset;
+
+//     countryTxt.textContent = country;
+//     tempTxt.textContent = `${Math.round(temp)} °C`;
+//     conditionTxt.textContent = main;
+//     humidityValueTxt.textContent = `${humidity}%`;
+//     windValueTxt.textContent = `${Math.round(speed)} Km/h`;
+//     currentDateTxt.textContent = new Date().toLocaleDateString('en-US', {
+//         weekday: 'short',
+//         day: 'numeric',
+//         month: 'short',
+//     });
+
+//     // Verify `id` value exists before using it
+//     if (id) {
+//         weatherSummaryImg.src = getWeatherIcon(id, isNight);
+//     } else {
+//         console.error("Invalid or undefined weather condition ID:", id);
+//         weatherSummaryImg.src = 'weather-assets/overcast-clouds.png';
+//     }
+
+//     weatherSummaryImg.style.width = '120px';
+//     weatherSummaryImg.style.height = '90px';
+//     weatherSummaryImg.style.objectFit = 'contain';
+
+//     showDisplaySection(weatherInfoSection);
+// }
+
+
+
+
 async function updateWeatherInfo(city) {
     var weatherData = await getFetchData('weather', city);
 
@@ -544,19 +682,23 @@ async function updateWeatherInfo(city) {
         currentDateTxt.textContent = '';
         // Show "Not Found" section
         showDisplaySection(notFoundSection);
+        console.error("Weather data not found or API error.");
         return;
     }
 
-    console.log(weatherData);
+    console.log("Weather data response:", weatherData); // Debugging line
 
-    // Destructure and update weather information
-    var {
-        name: country,
-        main: { temp, humidity },
-        weather: [{ id, main }],
-        wind: { speed },
-        sys: { sunrise, sunset },
-    } = weatherData;
+    // Destructure safely
+    var { name: country, main: { temp, humidity }, weather, wind, sys } = weatherData;
+
+    if (!weather || !weather[0] || !wind || !sys) {
+        console.error("Incomplete weather data received.");
+        return;
+    }
+
+    const { id, main } = weather[0];
+    const { speed } = wind;
+    const { sunrise, sunset } = sys;
 
     const currentTime = new Date().getTime() / 1000; // Current time in seconds
     const isNight = currentTime < sunrise || currentTime > sunset;
@@ -572,8 +714,10 @@ async function updateWeatherInfo(city) {
         month: 'short',
     });
 
-    // Corrected the path to weather icons
-    weatherSummaryImg.src = getWeatherIcon(id, isNight);
+    // Handle ID validation with a fallback
+    const iconSrc = getWeatherIcon(id, isNight);
+    weatherSummaryImg.src = iconSrc;
+
     // Dynamically set the size of the image
     weatherSummaryImg.style.width = '120px';
     weatherSummaryImg.style.height = '90px';
