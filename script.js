@@ -145,7 +145,7 @@ async function updateWeatherInfo(city) {
     tempTxt.textContent = `${Math.round(temp)} °C`;
     conditionTxt.textContent = main;
     humidityValueTxt.textContent = `${humidity}%`;
-    windValueTxt.textContent = `${Math.round(speed)} M/s`;
+    windValueTxt.textContent = `${Math.round(speed)} m/s`;
     currentDateTxt.textContent = new Date().toLocaleDateString('en-US', {
         weekday: 'short',
         day: 'numeric',
