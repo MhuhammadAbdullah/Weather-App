@@ -18,6 +18,81 @@ var forecastItemsContainer = document.querySelector('.forecast-items-container')
 
 var apiKey = 'c463ee4e1a5b11e96cb8c7d900a05814';
 
+// On page load, ask for location
+window.onload = () => {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                // If location is allowed
+                const { latitude, longitude } = position.coords;
+                console.log("Latitude:", latitude, "Longitude:", longitude); // Debug log
+                getWeatherByCoordinates(latitude, longitude);
+            },
+            (error) => {
+                // Handle location access errors
+                handleLocationError(error);
+            }
+        );
+    } else {
+        alert("Geolocation is not supported by this browser.");
+        showDisplaySection(searchCitySection);
+    }
+};
+
+// Fetch weather data based on coordinates
+function getWeatherByCoordinates(lat, lon) {
+    const apiKey = "c463ee4e1a5b11e96cb8c7d900a05814"; // Replace with your API key
+    const apiUrl = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`;
+
+    // Fetch weather data
+    fetch(apiUrl)
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error(`HTTP error! Status: ${response.status}`);
+            }
+            return response.json();
+        })
+        .then((data) => {
+            console.log("Weather Data:", data); // Debug log
+            displayWeatherData(data);
+        })
+        .catch((error) => {
+            console.error("Error fetching weather data:", error);
+            alert("Unable to fetch weather data. Please try again.");
+        });
+}
+
+// Display weather data
+function displayWeatherData(data) {
+    const weatherInfo = `
+        Location: ${data.name}
+        Temperature: ${data.main.temp}°C
+        Weather: ${data.weather[0].description}
+    `;
+    showDisplaySection(weatherInfoSection);
+}
+
+// Handle location errors
+function handleLocationError(error) {
+    switch (error.code) {
+        case error.PERMISSION_DENIED:
+            alert("Location access denied. Please allow location to use this feature.");
+            break;
+        case error.POSITION_UNAVAILABLE:
+            alert("Location information is unavailable. Please try again.");
+            break;
+        case error.TIMEOUT:
+            alert("Location request timed out. Please try again.");
+            break;
+        default:
+            alert("An unknown error occurred. Please try again.");
+            break;
+    }
+    showDisplaySection(searchCitySection);
+}
+
+
+
 // Event listener for the Search button
 searchBtn.addEventListener('click', () => {
     if (cityInput.value.trim() !== '') {
@@ -134,12 +209,12 @@ async function updateWeatherInfo(city) {
         return;
     }
 
-    const { id, main } = weather[0];
-    const { speed } = wind;
-    const { sunrise, sunset } = sys;
+    var { id, main } = weather[0];
+    var { speed } = wind;
+    var { sunrise, sunset } = sys;
 
-    const currentTime = new Date().getTime() / 1000; // Current time in seconds
-    const isNight = currentTime < sunrise || currentTime > sunset;
+    var currentTime = new Date().getTime() / 1000; // Current time in seconds
+    var isNight = currentTime < sunrise || currentTime > sunset;
 
     countryTxt.textContent = country;
     tempTxt.textContent = `${Math.round(temp)} °C`;
@@ -153,11 +228,11 @@ async function updateWeatherInfo(city) {
     });
 
     // Handle ID validation with a fallback
-    const iconSrc = getWeatherIcon(id, isNight);
+    var iconSrc = getWeatherIcon(id, isNight);
     weatherSummaryImg.src = iconSrc;
 
     // Dynamically set the size of the image
-    weatherSummaryImg.style.width = '120px';
+    weatherSummaryImg.style.width = '90px';
     weatherSummaryImg.style.height = '90px';
     weatherSummaryImg.style.objectFit = 'contain';
 
