@@ -18,10 +18,6 @@ var forecastItemsContainer = document.querySelector('.forecast-items-container')
 
 var apiKey = 'c463ee4e1a5b11e96cb8c7d900a05814';
 
-
-
-
-
 // Event listener for the Search button
 searchBtn.addEventListener('click', () => {
     if (cityInput.value.trim() !== '') {
