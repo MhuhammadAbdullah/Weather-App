@@ -189,7 +189,7 @@ body::before {
 }
 
 .forecast-items {
-    min-width: 70px;
+    min-width: 74px;
     background: rgb(255, 255, 255, 0.1);
     display: flex;
     flex-direction: column;
