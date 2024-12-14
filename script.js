@@ -166,25 +166,72 @@ async function updateWeatherInfo(city) {
     showDisplaySection(weatherInfoSection);
 }
 
+// async function updateForecastInfo(city) {
+//     var forecastData = await getFetchData('forecast', city);
+
+//     var timeTaken = '12:00:00'
+//     var todayDate = new Date().toISOString().split('T')[0]
+
+//     forecastItemsContainer.innerHTML = ''
+//     forecastData.list.forEach(forecastWeather => {
+//         if (forecastWeather.dt_txt.includes(timeTaken) &&
+//             !forecastWeather.dt_txt.includes(todayDate)) {
+//             updateForecastItems(forecastWeather);
+//             // console.log(forecastWeather);
+//         }
+
+
+//     })
+//     // console.log(todayDate);
+// }
+
+// function updateForecastItems(weatherData) {
+//     console.log(weatherData);
+//     var {
+//         dt_txt: date,
+//         weather: [{ id }],
+//         main: { temp }
+//     } = weatherData;
+
+//     var dateTaken = new Date(date)
+//     var dateOption = {
+//         day: '2-digit',
+//         month: 'short'
+//     }
+
+//     var dateResult = dateTaken.toLocaleDateString('en-US', dateOption)
+
+//     var forecastItem = `
+//         <div class="forecast-items">
+//           <h5 class="forecast-items-date regular-txt">${dateResult}</h5>
+//           <img src="${getWeatherIcon(id)}" class="forecast-items-img">
+//           <h5 class="forecast-items-temp">${Math.round(temp)} °C</h5>
+//         </div>
+//     `
+//     forecastItemsContainer.insertAdjacentHTML('beforeend', forecastItem)
+// }
+
+
 async function updateForecastInfo(city) {
     var forecastData = await getFetchData('forecast', city);
 
-    var timeTaken = '12:00:00'
-    var todayDate = new Date().toISOString().split('T')[0]
+    var timeTaken = '12:00:00'; // Sirf 12 baje ka data show karein
+    var todayDate = new Date().toISOString().split('T')[0];
 
-    forecastItemsContainer.innerHTML = ''
+    forecastItemsContainer.innerHTML = ''; // Purana data clear karein
+    var forecastCount = 0; // 7 din tak limit set karein
+
     forecastData.list.forEach(forecastWeather => {
-        if (forecastWeather.dt_txt.includes(timeTaken) &&
-            !forecastWeather.dt_txt.includes(todayDate)) {
+        if (
+            forecastWeather.dt_txt.includes(timeTaken) &&
+            !forecastWeather.dt_txt.includes(todayDate) &&
+            forecastCount < 7 // Sirf pehle 7 din ka data
+        ) {
             updateForecastItems(forecastWeather);
-            // console.log(forecastWeather);
+            forecastCount++; // Counter increment karein
         }
-
-
-    })
-    // console.log(todayDate);
+    });
 }
-
 function updateForecastItems(weatherData) {
     console.log(weatherData);
     var {
@@ -193,13 +240,14 @@ function updateForecastItems(weatherData) {
         main: { temp }
     } = weatherData;
 
-    var dateTaken = new Date(date)
+    var dateTaken = new Date(date);
     var dateOption = {
+        weekday: 'short', // Day name bhi add karein (e.g., Mon)
         day: '2-digit',
         month: 'short'
-    }
+    };
 
-    var dateResult = dateTaken.toLocaleDateString('en-US', dateOption)
+    var dateResult = dateTaken.toLocaleDateString('en-US', dateOption);
 
     var forecastItem = `
         <div class="forecast-items">
@@ -207,9 +255,10 @@ function updateForecastItems(weatherData) {
           <img src="${getWeatherIcon(id)}" class="forecast-items-img">
           <h5 class="forecast-items-temp">${Math.round(temp)} °C</h5>
         </div>
-    `
-    forecastItemsContainer.insertAdjacentHTML('beforeend', forecastItem)
+    `;
+    forecastItemsContainer.insertAdjacentHTML('beforeend', forecastItem);
 }
+
 
 // Show the selected section and hide others
 function showDisplaySection(section) {
